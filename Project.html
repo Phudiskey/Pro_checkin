@@ -1,0 +1,210 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/vuetify@3.4.10/dist/vuetify.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@3.4.10/dist/vuetify.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
+    <style>
+        .v-container {
+            background-color: #6666FF; 
+        }
+        #app {
+          width: 100%;
+          height: 100vh;
+          background-color: #038080; 
+      }
+        .custom-card-title {
+          background-color: #7cbcf0; 
+      }
+      .edit-button {
+        color: #6a6cf5; 
+      
+      }
+      .delete-button {
+        color: #bb1313;
+      }
+      .lavender-container {
+          background-color: #5da2fc; 
+          
+      }
+      .light-pur {
+        background-color:#f5eff8
+      }
+      .purple {
+        background-color: #32beff; 
+      }
+      .red {
+        color: #ffffff;
+        background-color:#9a0b0b
+        
+        
+      }
+      .green{
+        background-color:#a2f1aa
+      }
+      .very-light{
+        background-color:rgb(233, 231, 246)
+      }
+      .dark{
+        color: #ffffff;
+        background-color: #1322ff;
+      }
+      
+    </style>
+    </head>
+    <body class="lavender-container">
+    
+        <div id="app">
+          
+          <v-app class="lavender-container">
+            <v-container>
+              <v-card>
+                <v-card-title class="dark">{{ title }}</v-card-title>
+    
+                <v-card-text class="pa-6">
+                    <v-card-actions>
+                        <template v-if="user">
+                          <div class="pa-2">
+                              <v-avatar><img :src="user.photoURL" /></v-avatar>
+                          </div>
+                          <div class="pa-2">
+                              {{user.displayName}}<br />
+                              {{user.email}}<br />
+                        
+                              
+    
+                          </div>
+                         
+                      </template>
+    
+                     
+                      <v-btn @click="google_login()"  v-if="!user" class="purple"> Login</v-btn>
+                      <v-btn @click="google_logout()" v-if="user" class="purple"> Logout</v-btn>
+    
+                       
+                    </v-card-actions>
+
+            <script>
+                const firebaseConfig = {
+                    apiKey: "AIzaSyDPOtd0CwmuvbEhvlTBW8cTRSnpEoOhn58",
+                    authDomain: "procheckin-8b904.firebaseapp.com",
+                    projectId: "procheckin-8b904",
+                    storageBucket: "procheckin-8b904.appspot.com",
+                    messagingSenderId: "148827138181",
+                    appId: "1:148827138181:web:8cfaf39a98fa903be9a1ec"
+                };
+                      // Initialize Firebase
+                      firebase.initializeApp(firebaseConfig);
+                      const db = firebase.firestore();
+                
+                      const vuetify = Vuetify.createVuetify();
+                      const app = Vue.createApp({
+                        data() {
+                          return {
+                            title: "Student Checkin",
+                            footer: "633020038-2 Phudit Santhip CS",
+                            students: [],
+                            editstd: {},
+                            editmode: 0,
+                            user: null,
+                            ustudent: null,
+                          };
+                        },
+                        mounted() {
+                    firebase.auth().onAuthStateChanged((user) => {
+                        if (user) {
+                            this.user = user.toJSON();
+                        } else {
+                            this.user = null;
+                        }
+                    });
+                },
+                
+                
+                
+                
+                        methods: {
+                          readData() {
+                            db.collection("students")
+                              .get()
+                              .then((querySnapshot) => {
+                                var stdlist = [];
+                                querySnapshot.forEach((doc) => {
+                                  stdlist.push({ id: doc.id, ...doc.data() });
+                                });
+                                this.students = stdlist;
+                              });
+                          },
+                          autoRead() {
+                            db.collection("students").onSnapshot((querySnapshot) => {
+                              var stdlist = [];
+                              querySnapshot.forEach((doc) => {
+                                stdlist.push({ id: doc.id, ...doc.data() });
+                              });
+                              this.students = stdlist;
+                            });
+                          },
+                          edit(std) {
+                            this.editstd = std;
+                            this.editmode = "edit";
+                          },
+                          savedata() {
+                            db.collection("students").doc(this.editstd.id).set(this.editstd);
+                          },
+                          deleteData(std) {
+                            if (confirm("ต้องการลบข้อมูล")) {
+                              db.collection("students").doc(std.id).delete();
+                            }
+                          },
+                          addData() {
+                            this.editmode = "เพิ่มนักเรียน";
+                            this.editstd = {};
+                          },
+                          google_login() {
+                            // Using a popup.
+                            var provider = new firebase.auth.GoogleAuthProvider();
+                            provider.addScope("profile");
+                            provider.addScope("email");
+                            firebase.auth().signInWithPopup(provider);
+                          },
+                
+                          google_logout(){
+                            if(confirm("Are you sure?")){
+                              firebase.auth().signOut();
+                            }
+                          },
+                          getstudent(email){
+                            db.collection("students")
+                              .where("email","==",email)
+                              .limit(1)
+                              .get()
+                              .then(
+                                (querySnapshot) => {
+                                querySnapshot.forEach((doc) => {
+                                  this.ustudent = { id: doc.id, ...doc.data() };
+                                });
+                              }
+                            );
+                          
+                          }
+                          
+                
+                
+                
+                
+                        }
+                      });
+                      app.use(vuetify).mount("#app");
+                      
+                    </script>
+      
+</html>
