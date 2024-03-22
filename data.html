@@ -19,159 +19,222 @@
     <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&family=Itim&family=Roboto:wght@100&display=swap" rel="stylesheet">
 
 
-    <title>Student</title>
+    <title>Data</title>
     <style>
-    .v-container {
-      background-color: #6666FF; 
-    }
-    #app {
-      width: 100%;
-      height: 100vh;
-      background-color: #038080; 
-    }
-    .custom-card-title {
-      background-color: #7cbcf0; 
-    }
-    .edit-button {
-      color: #6a6cf5;  
-    }
-    .delete-button {
-      color: #bb1313;
-    }
-    .lavender-container {
-      background-color: #5da2fc;       
-    }
-    .light-pur {
-      background-color:#f5eff8
-    }
-    .purple {
-      background-color: #32beff; 
-    }
-    .red {
-      color: #ffffff;
-      background-color:#9a0b0b   
-    }
-    .green{
-      background-color:#a2f1aa
-    }
-    .very-light{
-      background-color:rgb(233, 231, 246)
-    }
-    .dark{
-      color: #ffffff;
-      background-color: #1322ff;
+      
+        .btn.btn-success {
+            float: right;
+            margin-left: 10px;
+        }
+        .footer {
+        background-color: #333;
+        color: #fff;
+        padding: 40px 0;
+        text-align: center;
     }
 
-    .lavender-container .v-btn {
-      background-color: #5da2fc;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      font-size: 16px;
+    .footer p {
+        margin: 300;
     }
 
-    .lavender-container .v-btn:hover {
-      background-color: #4a90e2;
+    .header {
+    background-color: #333; 
+    color: #fff; 
+    padding: 10px 20px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
     }
 
-    .lavender-container .v-btn:focus {
-      background-color: #4a90e2;
+    .logo {
+        font-size: 24px;
+        font-weight: bold;
     }
 
-    .lavender-container a.v-btn {
-      background-color: #5da2fc;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      font-size: 16px;
+    .navbar ul {
+        list-style-type: none; 
+        padding: 0;
+        margin: 0;
+        display: flex; 
     }
 
-    .lavender-container a.v-btn:hover {
-      background-color: #4a90e2;
+    .navbar li {
+        margin-right: 20px; 
     }
 
-    .lavender-container a.v-btn:focus {
-      background-color: #4a90e2;
+    .navbar a {
+        text-decoration: none; 
+        color: #fff; 
+    }
+
+    .navbar a:hover {
+        text-decoration: underline;
     }
     body {
         font-family: "Anuphan", sans-serif;
     }
-  
+    .v-container {
+            background-color: #6666FF; 
+        }
+        #app {
+          width: 100%;
+          height: 100vh;
+          background-color: #038080; 
+      }
+        .custom-card-title {
+          background-color: #7cbcf0; 
+      }
+      .edit-button {
+        color: #6a6cf5; 
+      
+      }
+      .delete-button {
+        color: #bb1313;
+      }
+      .lavender-container {
+          background-color: #5da2fc; 
+          
+      }
+      .light-pur {
+        background-color:#f5eff8
+      }
+      .purple {
+        background-color: #32beff; 
+      }
+      .red {
+        color: #ffffff;
+        background-color:#9a0b0b
+        
+        
+      }
+      .green{
+        background-color:#a2f1aa
+      }
+      .very-light{
+        background-color:rgb(233, 231, 246)
+      }
+      .dark{
+        color: #ffffff;
+        background-color: #1322ff;
+      }
+
+      .lavender-container .v-btn {
+        background-color: #5da2fc;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+     }
+
+      .lavender-container .v-btn:hover {
+        background-color: #4a90e2;
+     }
+
+      .lavender-container .v-btn:focus {
+        background-color: #4a90e2;
+     }
+
+      .lavender-container a.v-btn {
+        background-color: #5da2fc;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+      .lavender-container a.v-btn:hover {
+        background-color: #4a90e2;
+    }
+
+      .lavender-container a.v-btn:focus {
+        background-color: #4a90e2;
+    }
     </style>
 </head>
 <body>
-  <div id = "app">
-    <v-app>
-      <v-container>
-        <nav class="navbar bg-body-tertiary mb-0 h1">
-        <div class="container-fluid">
-        <a class="navbar-brand">Student Check</a>
-        <form class="d-flex" role="logout">
-        <div v-if="user">
-        <v-btn @click="google_logout()" v-if="user" class="btn btn-danger" flat text> Logout</v-btn>       
-        <v-avatar><img :src="user.photoURL" /></v-avatar>
-                    
-                  </div>
-                  </form>
-                </div>
-              </nav>
-                <v-card>
-
-
+    <header class="header">
+        <nav class="navbar">
+            <ul>
                 
-                  <v-card-actions >
-                    <template v-if="user">
-                      <div class="pa">
-                          "Welcome" : 
-                          {{user.displayName}}<br />
-                          {{user.email}}<br/>
-                      </div>
-                  </template>
-                  </v-card-actions>
-              
-                    <v-card-title class="cardTitle">{{title}}</v-card-title>
-                     
-                    
-
-                    <v-card v-if="editmode==='ข้อมูลการเช็คชื่อ'">
-                        <v-card-text class="pa-6">
-                            <v-card-title class="lavender-container">{{editmode}}</v-card-title>
-                            <v-text-field v-model="editcheckin.id" label="รหัส" ></v-text-field>
-                            <v-text-field type="datetime-local" v-model="editcheckin.class_date" label="เวลา"></v-text-field>
-                            <v-text-field v-model="editcheckin.room" label="ห้อง"></v-text-field>
-                            <v-text-field v-model="editcheckin.subject" label="วิชา"></v-text-field>
-                            <div  v-for="(q) in quiz" class="pa-2"> 
-                                 <h2>
-                                    <h2>{{q.quiz_name}}</h2>
-                                </h2>
-                            </div>คำตอบ: <v-text-field v-model="editcheckin.qiz_send" label="คำตอบ"></v-text-field>
-
-                       </v-card-text>
-                       <v-card-actions>
-                            <v-btn @click="saveqiz_back()">Checkin</v-btn>
-                            <v-btn @click="editmode=0">Cancel</v-btn>
-                       </v-card-actions>
-                     </v-card> 
-    
+            </ul>
+        </nav>
+    </header>
+    <div id = "app">
+        <v-app>
+            <v-container>
+                <v-card>
+                    <v-card-title class="bg-blue-grey">{{title}}</v-card-title>
+                      <v-card-actions >
+                        <template v-if="user">
+                          <div class="pa-2">
+                              <v-avatar><img :src="user.photoURL" /></v-avatar>
+                          </div>
+                          <div class="pa-2">
+                              {{user.displayName}}<br />
+                              {{user.email}}<br/>
+                          </div>
+                      </template>
+                    </v-card-actions>
                   
+                    
                     <v-card-actions>
                         
-                        <v-btn @click="sendob()" class="btn btn-outline-primary">Checkin</v-btn>
-                        <!-- <a type="button" class="btn btn-outline-danger" href="index.html">Back</a> -->
+                        <v-btn @click="addData()" class="btn btn-success" >เพิ่มนักศึกษา</v-btn>
+                        <a href="teacher.html" class="btn btn-success">เเสดงรายชื่อทั้งหมด</a>
                     </v-card-actions>
-                       
+                    
+                   
+    
+                    <v-card-actions>
+                        <v-btn @click="google_login()" v-if="!user"> Login</v-btn>
+                        <div v-if="user">
+                          <v-btn @click="google_logout()" v-if="user" class="btn btn-danger"> Logout</v-btn>
+                          <v-btn href="teacherr.html" class="lavender-container">Back</v-btn>     
+                          <div v-for="(s) in students">
+                            <v-btn v-if="user.email == s.email"><a href="student.html">Next for students</a></v-btn>
+                          </div> 
+                          <!-- <div v-for="(t) in teachers">
+                            <v-btn v-if="user.email == t.email"><a href="teachers_home.html">Next for Teachers</a></v-btn>
+                          </div>    -->
+                        </div>
+                             
+                    </v-card-actions>
                 </v-card>
+                
+                
                
+                <!--แก้ไขข้อมูล - เพิ่มข้อมูล -->
+                <v-card v-if="editmode==='เพิ่มนักเรียน'">
+                    <v-card-text class="pa-6">
+                        <v-card-title class="bg-blue-grey">{{editmode}}</v-card-title>
+                        <v-text-field v-model="editstd.id" label="รหัส"></v-text-field>
+                        <v-combobox v-model="editstd.title" label="คำนำหน้า" :items="['นาย','นางสาว']"></v-combobox>
+                        <v-text-field v-model="editstd.fname" label="ชื่อ"></v-text-field>
+                        <v-text-field v-model="editstd.lname" label="นามสกุล"></v-text-field>
+                        <v-text-field v-model="editstd.email" label="E-mail"></v-text-field>
+                        <v-text-field v-model="editstd.section" label="Section"></v-text-field>
+                   </v-card-text>
+                   <v-card-actions>
+                        <v-btn @click="savedata()" class="btn btn-success" >บันทึก</v-btn>
+                        <v-btn @click="editmode=0" class="btn btn-danger" >ยกเลิก</v-btn>
+                   </v-card-actions>
+                 </v-card>
+
+                 
 
                           
-              <div class="pa-6 text-center">{{footer}}</div>
+                
             </v-container>        
           </v-app>
-        </div>
-        <script>
-    
+          <footer class="footer">
+            <div class="container">
+                <p>&copy; Molbie application project.</p>
+            </div>
+        </footer>
+    </div>
+    <script>
         const vuetify = Vuetify.createVuetify();
         const firebaseConfig = {
           apiKey: "AIzaSyDPOtd0CwmuvbEhvlTBW8cTRSnpEoOhn58",
@@ -187,21 +250,21 @@
         const app = Vue.createApp({
           data() {
             return {
-              title: "",
+              title: "รายชื่อนักศึกษา",
               footer: "",
               students: [],
               editstd: {},
               editquiz: {},
               quiz: [],
-              editcheckin:{},
               editmode: 0,
               teachers: [],
               user: null,
               ustudent: null,
+              checkin:[],
             };
           },
   
-          
+  
           mounted() {
               firebase.auth().onAuthStateChanged((user)=>{
                   if (user) {
@@ -236,16 +299,14 @@
                   });
                   this.quiz = quizlist;
               });
-              db.collection("answer")
-              .get()
+              db.collection("checkin") .get()
               .then((querySnapshot) => {
-                  var answerlist = [];
+                  var checkinlist = [];
                   querySnapshot.forEach((doc) => {
-                    quizlist.push({ id: doc.id, ...doc.data() });
+                    checkinlist.push({ id: doc.id, ...doc.data() });
                   });
-                  this.quiz = answerlist;
+                  this.checkin = checkinlist;
               });
-
               
           },
           
@@ -289,18 +350,28 @@
                 this.editquiz = quiz;
                 this.editmode = "เพิ่มคำถาม";
             },
-            sendob(){
-                this.editmode = "ข้อมูลการเช็คชื่อ";
-                this.editcheckin={};
+              cheksend(){
+                this.editmode = "เช็คคำตอบ";
             },
-              saveqiz_back(){
-                    db.collection("answer").doc(this.editcheckin.id).set(this.editcheckin);
+            showsubject(){
+                this.editmode = "โชว์คำตอบทั้งหมด";
+            },
+              savedata(){
+                      db.collection("student").doc(this.editstd.id).set(this.editstd);
+              },
+              saveqiz(){
+                    db.collection("quiz").doc(this.editquiz.id).set(this.editquiz);
               },
               deleteData(std) {
                   if (confirm("ต้องการลบข้อมูล")) {
                   db.collection("student").doc(std.id).delete();
                   }
               },
+              deletesed(std) {
+                if (confirm("ต้องการลบข้อมูล")) {
+                db.collection("checkin").doc(std.id).delete();
+                }
+            },
               deleteqiz(qiz) {
                 if (confirm("ต้องการลบข้อมูล")) {
                 db.collection("quiz").doc(qiz.id).delete();
@@ -342,7 +413,6 @@
         
         app.use(vuetify).mount("#app");
       </script>
-    
     
 </body>
 </html>
