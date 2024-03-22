@@ -202,7 +202,7 @@
                         </thead>
                         <tbody>
                           <tr v-for="(q) in quiz">
-                            <td>{{q.quiz_cus}}</td>
+                            <!-- <td>{{q.quiz_cus}}</td> -->
                             <td>{{q.quiz_name}}</td>
                             <td>
                                 <v-btn @click="editqz(q)"><v-icon icon="mdi-account-edit"></v-icon></v-btn>
@@ -223,7 +223,7 @@
                         <v-card-title class="bg-blue-grey">{{editmode}}</v-card-title>
                         <!-- <v-text-field v-model="editquiz.id" label="รหัส" value="Auto-ID"></v-text-field> -->
                         <v-text-field v-model="editquiz.quiz_name" label="คำถาม"></v-text-field>
-                        <v-text-field v-model="editquiz.quiz_cus" label="โพสโดย"></v-text-field>
+                        <!-- <v-text-field v-model="editquiz.quiz_cus" label="โพสโดย"></v-text-field> -->
                    </v-card-text>
                    <v-card-actions>
     
