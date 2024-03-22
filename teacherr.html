@@ -115,69 +115,51 @@
 
 
             <v-card-text class="pa-6">
-                <v-card-actions>
-                    <template v-if="user">
-                      <div class="pa-2">
-                          <v-avatar><img :src="user.photoURL" /></v-avatar>
-                      </div>
-                      <div class="pa-2">
-                          {{user.displayName}}<br />
-                          {{user.email}}<br />
-                    
-                          
-
-                      </div>
-                      <v-btn @click="google_logout()" v-if="user" class="btn btn-danger"> Logout</v-btn>
-                  </template>
-
-                 
-                </v-card-actions>
-               
+              <v-card-actions>
+                  <template v-if="user">
+                    <div class="pa-2">
+                        <v-avatar><img :src="user.photoURL" /></v-avatar>
+                    </div>
+                    <div class="pa-2">
+                        {{user.displayName}}<br />
+                        {{user.email}}<br />
+                    </div>
+                    <v-btn @click="google_logout()" v-if="user" class="btn btn-danger"> Logout</v-btn>
+                </template>
+              </v-card-actions>
+              <v-text-field v-model="searchID" label="ID" class="very-light"></v-text-field>
+              <v-btn @click="getstudent(searchID)" class="custom-card-title">SEARCH</v-btn>
               
-                
-              <!-- <pre>{{students}}</pre> -->
-              <!-- <v-text-field v-model="ustudent" label="E-mail" class="very-light"></v-text-field>
-                <v-btn @click="getstudent(ustudent)" class="custom-card-title">SEARCH</v-btn> -->
-                
-                <br/>
-                <br/>
-                <table width="100%">
-                  <thead>
-                    <tr>
-                      <td>รหัส</td>
-                      <td>เวลาเข้าเรียน</td>
-                      <td>room</td>
-                      <td>วิชา</td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(s) in students">
-                      <td>{{ s.id }}</td>
-                      <td>{{ s.class_date }}</td>
-                      <td>{{ s.section }}</td>
-                      <td>{{ s.subject }}</td>
-                      <!-- <td>
-                        <v-btn @click="edit(s)" class="edit-button purple">EDIT</v-btn>
-                        <v-btn @click="deleteData(s)" class="delete-button red">DELETE</v-btn>
-                      </td> -->
-                    </tr>
-                  <!-- </tr>
-                <tr v-if="ustudent">
-                  <td>{{ustudent.id}}</td>
-                  <td>{{ustudent.title}}</td>
-                  <td>{{ustudent.fname}}</td>
-                  <td>{{ustudent.lname}}</td>
-                  <td>{{ustudent.email}}</td>
-                  <td>
-                    <v-btn @click="edit(ustudent)" class="purple">EDIT</v-btn>
-                    <v-btn @click="deleteData(ustudent)" class="red">DELETE</v-btn>
-                  </td>
-
-
-                </tr> -->
+              <br/>
+              <br/>
+              <table width="100%">
+                <thead>
+                  <tr>
+                    <td>รหัส</td>
+                    <td>เวลาเข้าเรียน</td>
+                    <td>room</td>
+                    <td>วิชา</td>
+                    <td>เข้่าเรียน</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(s) in students">
+                    <td>{{ s.id }}</td>
+                    <td>{{ s.class_date }}</td>
+                    <td>{{ s.room }}</td>
+                    <td>{{ s.subject }}</td>
+                    <td>{{ s.come_class }}</td>
+                    <td>
+                      
+                      <v-btn @click="edit(s)" class="edit-button purple">EDIT</v-btn>
+                      
+                      <!-- <v-btn @click="deleteStudent(s)" class="delete-button red">DELETE</v-btn> -->
+                    </td>  
+                  </tr>
+                  
                 </tbody>
               </table>
-            </v-card-text>
+          </v-card-text>
 
             <v-card-actions>
               <v-btn @click="readData()" class="lavender-container">Check Student</v-btn>
@@ -189,50 +171,35 @@
                 <v-btn href="quiz.html" class="lavender-container">
                   Quiz
                 </v-btn>
-                <v-btn @click="randomStudent" class="lavender-container">Random Student</v-btn>
+                
                 <v-btn @click="randomCheck()" class="lavender-container">Random Check</v-btn>
-                <v-btn v-if="randomCheckActive" @click="toggleClassStatus(randomStudent)">Missing Class</v-btn>
+                
+                
 
-              <!-- <v-btn @click="autoRead()" class="lavender-container">Auto Read (onSnapshot)</v-btn> -->
-              <!-- <v-btn @click="addData()" class="lavender-container">Add Data</v-btn> -->
+              
             </v-card-actions>
-          <!-- </v-card>
-          <v-card v-if="editmode" class="very-light">
-            <v-card-text class="pa-6">
-              <v-card-title class="purple">{{editmode}}</v-card-title>
-              <v-text-field v-model="editstd.id" label="รหัส" ></v-text-field>
-              <v-combobox
-                v-model="editstd.title"
-                label="คำนำหน้า"
-                :items="['นาย','นาง','นางสาว','ด.ช.','ด.ญ']"
-              ></v-combobox>
-              <v-text-field v-model="editstd.fname" label="ชื่อ"></v-text-field>
-              <v-text-field
-                v-model="editstd.lname"
-                label="นามสกุล"
-              ></v-text-field>
-              <v-text-field
-                v-model="editstd.email"
-                label="E-mail"
-              ></v-text-field>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn @click="savedata()" class="green">Save</v-btn>
-              <v-btn @click="editmode=0">Cancel</v-btn>
-            </v-card-actions>
-          </v-card>
- -->
+            <!--แก้ไขข้อมูล - เพิ่มข้อมูล -->
+            <v-card v-if="editmode==='เพิ่มนักศึกษา'">
+              <v-card-text class="pa-6">
+                  <v-card-title class="bg-blue-grey">{{editmode}}</v-card-title>
+                  <v-text-field v-model="editstd.id" label="รหัส"></v-text-field>
+                  <v-text-field v-model="editstd.class_date" label="เวลาเข้าเรียน" ></v-text-field>
+                  <v-text-field v-model="editstd.room" label="ห้อง"></v-text-field >
+                  <v-text-field v-model="editstd.subject" label="วิชา"></v-text-field>
+                  <v-combobox v-model="editstd.come_class" label="มาเรียนหรือไม่" :items="['มาเรียน','ไม่มาเรียน']"></v-combobox>
+             </v-card-text>
+             <v-card-actions>
+                  <v-btn @click="savedata()" class="btn btn-success" >Save</v-btn>
+                  <v-btn @click="editmode=0" class="btn btn-danger" >Cancel</v-btn>
+             </v-card-actions>
+           </v-card>
+  
           
           <div class="pa-6 text-center">
             {{footer}}
           </div>
           
           
-          <!-- <div style="display: flex; justify-content: center;">
-            <v-btn href="../index.html" class="dark">BACK TO HOME</v-btn>
-          </div> -->
-          
-
         </v-container>
       </v-app>
     </div>
@@ -261,6 +228,7 @@
             editmode: 0,
             user: null,
             ustudent: null,
+            randomCheckActive: false,
           };
         },
         mounted() {
@@ -278,16 +246,18 @@
 
         methods: {
           readData() {
-            db.collection("student")
+            db.collection("checkin")
               .get()
               .then((querySnapshot) => {
                 var stdlist = [];
                 querySnapshot.forEach((doc) => {
-                  stdlist.push({ 
-                    id: doc.id,
-                    class_date: doc.data().class_date, // ชื่อฟิลด์ต้องตรงกับ Firestore
-                    section: doc.data().section, // ชื่อฟิลด์ต้องตรงกับ Firestore
-                    subject: doc.data().subject // ชื่อฟิลด์ต้องตรงกับ Firestore
+                  stdlist.push({
+                    id: doc.id, ...doc.data()
+                    // id: doc.id,
+                    // class_date: doc.data().class_date, // ชื่อฟิลด์ต้องตรงกับ Firestore
+                    // room: doc.data().room,// ชื่อฟิลด์ต้องตรงกับ Firestore
+                    // subject: doc.data().subject, // ชื่อฟิลด์ต้องตรงกับ Firestore
+                    // come_class: doc.data().come_class
                   });
                 });
                 this.students = stdlist;
@@ -318,51 +288,65 @@
             this.editmode = "เพิ่มนักเรียน";
             this.editstd = {};
           },
-          randomStudent() {
-  // สุ่ม index ของนักเรียนที่จะแสดง
-  const randomIndex = Math.floor(Math.random() * this.students.length);
+          deleteStudent(student) {
+    if (confirm("ต้องการลบข้อมูล?")) {
+      db.collection("checkin").doc(student.id).delete()
+        .then(() => {
+          // ลบข้อมูลสำเร็จ
+          console.log("Document successfully deleted!");
+          // ลบข้อมูลที่ถูกลบออกจากตารางแสดงผล
+          const index = this.students.findIndex(s => s.id === student.id);
+          if (index !== -1) {
+            this.students.splice(index, 1);
+          }
+        })
+        .catch((error) => {
+          // มีข้อผิดพลาดเกิดขึ้นในการลบ
+          console.error("Error removing document: ", error);
+        });
+    }
+  },
+          randomCheck() {
+  // กรองนักเรียนที่ยังไม่ได้ถูกสุ่ม
+  const remainingStudents = this.students.filter(student => !student.randomized);
+
+  // ถ้านักเรียนทั้งหมดถูกสุ่มแล้ว
+  if (remainingStudents.length === 0) {
+    this.footer = "สุ่มเสร็จสิ้น นักศึกษาครบแล้ว";
+    return;
+  }
+
+  // สุ่ม index ของนักเรียนที่ยังไม่ได้ถูกสุ่ม
+  const randomIndex = Math.floor(Math.random() * remainingStudents.length);
+
   // ดึงข้อมูลของนักเรียนที่สุ่มได้
-  const randomStudent = this.students[randomIndex];
-  
-  // แสดงชื่อนักเรียนที่สุ่มได้ใน console log เพื่อทดสอบ
+  const randomStudent = remainingStudents[randomIndex];
+
+  // ระบุวันที่และเวลาเข้าเรียน
+  const currentDate = new Date();
+  const formattedDate = currentDate.toLocaleString('en-US', { timeZone: 'UTC' }).replace(',', '');
+
+  // ถ้านักเรียนยังไม่มีวันที่เข้าเรียน (ค่าเริ่มต้น) ให้กำหนดเป็นวันที่และเวลาปัจจุบัน
+  if (!randomStudent.class_date) {
+    randomStudent.class_date = formattedDate;
+  }
+
+  // แสดงข้อมูลนักเรียนที่สุ่มได้ใน console log เพื่อทดสอบ
   console.log("Random Student:", randomStudent);
 
-  // แสดงชื่อนักเรียนที่สุ่มได้ใน UI โดยใส่ไว้ในตัวแปร footer หรือส่วนใดๆที่ต้องการแสดงผล
-  this.footer = `นักเรียนที่สุ่มได้: ${randomStudent.id} - ${randomStudent.class_date} - ${randomStudent.section} - ${randomStudent.subject}`;
+  // กำหนดค่า randomized เป็น true เพื่อบอกว่านักเรียนนี้ถูกสุ่มแล้ว
+  randomStudent.randomized = true;
+
+  // แสดงข้อมูลของนักเรียนที่สุ่มได้ใน UI หรือส่วนอื่น ๆ ที่คุณต้องการ
+  this.footer = `นักเรียนที่สุ่มได้: ${randomStudent.id} - ${randomStudent.class_date} - ${randomStudent.room} - ${randomStudent.subject}`;
+
+  // ลบนักเรียนที่ถูกสุ่มไปแล้วออกจากรายการนักเรียนที่เหลือ
+  const indexToRemove = this.students.findIndex(student => student.id === randomStudent.id);
+  this.students.splice(indexToRemove, 1);
+
+  // เปิดใช้งาน Random Check
+  this.randomCheckActive = true;
 },
-randomCheck() {
-    const remainingStudents = this.students.filter(student => !student.randomized);
-    if (remainingStudents.length === 0) {
-      this.footer = "สุ่มเสร็จสิ้น นักเรียนครบแล้ว";
-      return;
-    }
-    const randomIndex = Math.floor(Math.random() * remainingStudents.length);
-    const randomStudent = remainingStudents[randomIndex];
-    const currentDate = new Date();
-    const formattedDate = currentDate.toLocaleString('en-US', { timeZone: 'UTC' }).replace(',', '');
-    if (!randomStudent.class_date) {
-      randomStudent.class_date = formattedDate;
-    }
-    randomStudent.subject = "WebApp";
-    console.log("Random Student:", randomStudent);
-    randomStudent.randomized = true;
-    this.students.push(randomStudent);
-    this.footer = `นักเรียนที่สุ่มได้: ${randomStudent.id} - ${randomStudent.class_date} - ${randomStudent.section} - ${randomStudent.subject}`;
-    const indexToRemove = this.students.findIndex(student => student.id === randomStudent.id);
-    this.students.splice(indexToRemove, 1);
-
-    // เปิดใช้งาน Random Check
-    this.randomCheckActive = true;
-  },
-  // เพิ่ม toggleClassStatus ไปยังการคลิกปุ่ม Missing Class
-  toggleClassStatus(student) {
-    // สลับสถานะของการเข้าเรียนระหว่างเวลาเข้าเรียนและ "Missing Class"
-    student.class_date = student.class_date === "Missing Class" ? student.original_class_date : "Missing Class";
-  },
-
-
-
-
 
           google_login() {
             // Using a popup.
@@ -378,20 +362,59 @@ randomCheck() {
               window.location.href = 'index.html';
             }
           },
-          getstudent(email){
-            db.collection("checkin")
-              .where("email","==",email)
-              .limit(1)
-              .get()
-              .then(
-                (querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                  this.ustudent = { id: doc.id, ...doc.data() };
-                });
-              }
-            );
-          
-          }
+          getstudent(id) {
+  // ค้นหาข้อมูลจาก ID ที่รับเข้ามา
+  db.collection("checkin")
+    .doc(id)  // ใช้ .doc(id) เพื่อค้นหาเอกสารที่มี ID ตรงกับที่รับเข้ามา
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        // ถ้าเอกสารพบ (ID ตรง)
+        this.students = [{  // กำหนดข้อมูลให้แสดงเฉพาะข้อมูลที่ค้นหาเจอ
+          id: doc.id,
+          class_date: doc.data().class_date,
+          room: doc.data().room,
+          subject: doc.data().subject
+        }];
+        this.footer = '';  // ล้างข้อความใน footer
+      } else {
+        // ถ้าเอกสารไม่พบ (ID ไม่ตรง)
+        this.students = [];  // กำหนดให้แสดงข้อความว่าไม่พบข้อมูล
+        this.footer = 'ไม่พบข้อมูลที่ค้นหา'; 
+      }
+    })
+    .catch((error) => {
+      console.error("Error getting document:", error);
+    });
+},
+getstudent(id) {
+  // ค้นหาข้อมูลจาก ID ที่รับเข้ามา
+  db.collection("checkin")
+    .doc(id)  // ใช้ .doc(id) เพื่อค้นหาเอกสารที่มี ID ตรงกับที่รับเข้ามา
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        // ถ้าเอกสารพบ (ID ตรง)
+        this.students = [{  // กำหนดข้อมูลให้แสดงเฉพาะข้อมูลที่ค้นหาเจอ
+          id: doc.id,
+          class_date: doc.data().class_date,
+          room: doc.data().room,
+          subject: doc.data().subject
+        }];
+        this.footer = '';  // ล้างข้อความใน footer
+      } else {
+        // ถ้าเอกสารไม่พบ (ID ไม่ตรง)
+        this.students = [];  // กำหนดให้แสดงข้อความว่าไม่พบข้อมูล
+        this.footer = 'ไม่พบข้อมูลที่ค้นหา'; 
+      }
+    })
+    .catch((error) => {
+      console.error("Error getting document:", error);
+    });
+},
+
+
+
           
 
 

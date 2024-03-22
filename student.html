@@ -142,6 +142,7 @@
                             <v-text-field type="datetime-local" v-model="editcheckin.class_date" label="เวลา"></v-text-field>
                             <v-text-field v-model="editcheckin.room" label="ห้อง"></v-text-field>
                             <v-text-field v-model="editcheckin.subject" label="วิชา"></v-text-field>
+                            <v-combobox v-model="editcheckin.come_class" label="มาเรียนหรือไม่" :items="['มาเรียน','ไม่มาเรียน']"></v-combobox>
                             <div  v-for="(q) in quiz" class="pa-2"> 
                                  <h2>
                                     <h2>{{q.quiz_name}}</h2>
@@ -294,7 +295,7 @@
                 this.editcheckin={};
             },
               saveqiz_back(){
-                    db.collection("answer").doc(this.editcheckin.id).set(this.editcheckin);
+                    db.collection("checkin").doc(this.editcheckin.id).set(this.editcheckin);
               },
               deleteData(std) {
                   if (confirm("ต้องการลบข้อมูล")) {

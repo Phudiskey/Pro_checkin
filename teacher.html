@@ -19,7 +19,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&family=Itim&family=Roboto:wght@100&display=swap" rel="stylesheet">
 
 
-    <title>Data</title>
+    <title>Teacher</title>
     <style>
       
         .btn.btn-success {
@@ -177,42 +177,41 @@
                           </div>
                       </template>
                     </v-card-actions>
-                    <v-text-field v-model="ustudent" label="E-mail" class="very-light"></v-text-field>
-                    <v-btn @click="getstudent(ustudent)" class="custom-card-title">SEARCH</v-btn>
+                    <v-text-field v-model="searchID" label="ID" class="very-light"></v-text-field>
+                    <v-btn v-btn @click="getstudent(searchID)" class="custom-card-title">SEARCH</v-btn>
 
                     <br/>
                     <br/>
                     <table width="100%">
                       <thead>
                         <tr>
-                          <td>รหัส</td>
-                          <td>คำนำหน้า</td>
-                          <td>ชื่อ</td>
-                          <td>สกุล</td>
-                          <td>Email</td>
+                            <td>รหัส</td>
+                            <td>เวลาเข้าเรียน</td>
+                            <td>room</td>
+                            <td>วิชา</td>
+                            <td>เข้่าเรียน</td>
                         </tr>
                       </thead>
                       <tbody>
                         <tr v-for="(s) in students">
-                          <td>{{s.id}}</td>
-                          <td>{{s.title}}</td>
-                          <td>{{s.fname}}</td>
-                          <td>{{s.lname}}</td>
-                          <td>{{s.email}}</td>
+                            <td>{{ s.id }}</td>
+                            <td>{{ s.class_date }}</td>
+                            <td>{{ s.room }}</td>
+                            <td>{{ s.subject }}</td>
+                            <td>{{ s.come_class }}</td>
                           <td>
                             <v-btn class="edit-button" @click="edit(s)" class="purple">EDIT</v-btn>
-                            <v-btn class="delete-button" @click="deleteData(s)" class="red">DELETE</v-btn>
+                            <!-- <v-btn class="delete-button" @click="deleteData(s)" class="red">DELETE</v-btn> -->
                           </td>
                         </tr>
                       <tr v-if="ustudent">
                         <td>{{ustudent.id}}</td>
-                        <td>{{ustudent.title}}</td>
-                        <td>{{ustudent.fname}}</td>
-                        <td>{{ustudent.lname}}</td>
-                        <td>{{ustudent.email}}</td>
+                        <td>{{ustudent.class_date}}</td>
+                        <td>{{ustudent.room}}</td>
+                        <td>{{ustudent.subject}}</td>
+                        <td>{{ustudent.come_class}}</td>
                         <td>
                           <v-btn @click="edit(ustudent)" class="purple">EDIT</v-btn>
-                          <v-btn @click="deleteData(ustudent)" class="red">DELETE</v-btn>
                         </td>
       
       
@@ -222,42 +221,53 @@
                     
                     <v-card-actions>
                         
-                        <v-btn @click="addData()" class="btn btn-success" >เพิ่มนักศึกษา</v-btn>
+                        <!-- <v-btn @click="addData()" class="btn btn-success" >เพิ่มนักศึกษา</v-btn> -->
                         <!-- <v-btn @click="autoRead()" class="lavender-container">รายชื่อนักศึกษา</v-btn> -->
-                        <v-btn @click="toggleStudents()" class="lavender-container">รายชื่อนักศึกษา</v-btn>
+                        <!-- <v-btn @click="toggleStudents()" class="lavender-container">รายชื่อนักศึกษา</v-btn> -->
 
                     </v-card-actions>
                     
                    
     
-                    <v-card-actions>
+                    <!-- <v-card-actions>
                         <v-btn @click="google_login()" v-if="!user"> Login</v-btn>
                         <div v-if="user">
                           <v-btn @click="google_logout()" v-if="user" class="btn btn-danger"> Logout</v-btn>
-                          <v-btn href="teacher.html" class="lavender-container">Back</v-btn>     
-                          <!-- <div v-for="(s) in students">
-                            <v-btn v-if="user.email == s.email"><a href="student.html">Next for students</a></v-btn> -->
+                          <v-btn href="teacherr.html" class="lavender-container">Back</v-btn>     
+                          <div v-for="(s) in students">
+                            <v-btn v-if="user.email == s.email"><a href="student.html">Next for students</a></v-btn>
                           </div> 
                           <!-- <div v-for="(t) in teachers">
                             <v-btn v-if="user.email == t.email"><a href="teachers_home.html">Next for Teachers</a></v-btn>
                           </div>    -->
-                        </div>
+                        <!-- </div>
                              
-                    </v-card-actions>
+                    </v-card-actions> -->
                 </v-card>
+                <v-card-actions>
+
+      
+                <v-btn href="data.html" class="lavender-container">Data</v-btn>
+
+                <v-btn @click="readData()" class="lavender-container">Check Student</v-btn>
+                      
+                <v-btn href="quiz.html" class="lavender-container">Quiz</v-btn>
+                      
+                <v-btn @click="randomCheck()" class="lavender-container">Random Check</v-btn>
+        
+                </v-card-actions>
                 
                 
                
                 <!--แก้ไขข้อมูล - เพิ่มข้อมูล -->
-                <v-card v-if="editmode==='เพิ่มนักศึกษา'">
+                <v-card v-if="editmode==='แก้ไขข้อมูล'">
                     <v-card-text class="pa-6">
                         <v-card-title class="bg-blue-grey">{{editmode}}</v-card-title>
                         <v-text-field v-model="editstd.id" label="รหัส"></v-text-field>
-                        <v-combobox v-model="editstd.title" label="คำนำหน้า" :items="['นาย','นางสาว']"></v-combobox>
-                        <v-text-field v-model="editstd.fname" label="ชื่อ"></v-text-field>
-                        <v-text-field v-model="editstd.lname" label="นามสกุล"></v-text-field>
-                        <v-text-field v-model="editstd.email" label="E-mail"></v-text-field>
-                        <v-text-field v-model="editstd.section" label="Section"></v-text-field>
+                        <v-text-field v-model="editstd.class_date" label="เวลาเข้าเรียน" ></v-text-field>
+                        <v-text-field v-model="editstd.room" label="ห้อง"></v-text-field >
+                        <v-text-field v-model="editstd.subject" label="วิชา"></v-text-field>
+                        <v-combobox v-model="editstd.come_class" label="มาเรียนหรือไม่" :items="['มาเรียน','ไม่มาเรียน']"></v-combobox>
                    </v-card-text>
                    <v-card-actions>
                         <v-btn @click="savedata()" class="btn btn-success" >Save</v-btn>
@@ -268,14 +278,12 @@
                  
 
                           
-                
+                 <div class="pa-6 text-center">
+                    {{footer}}
+                  </div>
             </v-container>        
           </v-app>
-          <footer class="footer">
-            <div class="container">
-                <p>&copy; Molbie application project.</p>
-            </div>
-        </footer>
+          
     </div>
     <script>
         const vuetify = Vuetify.createVuetify();
@@ -325,7 +333,7 @@
                   });
                   this.teachers = teacherslist;
               });
-              db.collection("student")
+              db.collection("checkin")
               .get()
               .then((querySnapshot) => {
                   var stdlist = [];
@@ -373,6 +381,29 @@
               //     this.students = stdlist;
               //     });
               // },
+              readData() {
+        // เรียกใช้งาน collection "checkin" จาก Firestore
+        db.collection("checkin").get()
+            .then((querySnapshot) => {
+                let stdlist = [];
+                querySnapshot.forEach((doc) => {
+                    // สร้าง object ข้อมูลของนักเรียนแต่ละคน
+                    let student = {
+                        id: doc.id,
+                        class_date: doc.data().class_date,
+                        room: doc.data().room,
+                        subject: doc.data().subject,
+                        come_class: doc.data().come_class
+                    };
+                    stdlist.push(student);
+                });
+                // นำข้อมูลทั้งหมดมาเก็บไว้ในตัวแปร students ของ Vue instance
+                this.students = stdlist;
+            })
+            .catch((error) => {
+                console.error("Error getting documents: ", error);
+            });
+    },
               autoRead() {
                      if (this.showStudents) {
                      db.collection("student").onSnapshot((querySnapshot) => {
@@ -407,7 +438,7 @@
                     },
               
               addData(){
-                  this.editmode = "เพิ่มนักศึกษา";
+                  this.editmode = "แก้ไขข้อมูล";
                   this.editstd = {};
               },
 
@@ -421,7 +452,7 @@
                 },
               edit(std){
                   this.editstd = std;
-                  this.editmode = "เพิ่มนักศึกษา";
+                  this.editmode = "แก้ไขข้อมูล";
               },
               editqz(quiz){
                 this.editquiz = quiz;
@@ -434,7 +465,7 @@
                 this.editmode = "โชว์คำตอบทั้งหมด";
             },
               savedata(){
-                      db.collection("student").doc(this.editstd.id).set(this.editstd);
+                      db.collection("checkin").doc(this.editstd.id).set(this.editstd);
               },
               saveqiz(){
                     db.collection("quiz").doc(this.editquiz.id).set(this.editquiz);
@@ -454,6 +485,47 @@
                 db.collection("quiz").doc(qiz.id).delete();
                 }
             },
+            randomCheck() {
+  // กรองนักเรียนที่ยังไม่ได้ถูกสุ่ม
+  const remainingStudents = this.students.filter(student => !student.randomized);
+
+  // ถ้านักเรียนทั้งหมดถูกสุ่มแล้ว
+  if (remainingStudents.length === 0) {
+    this.footer = "สุ่มเสร็จสิ้น นักศึกษาครบแล้ว";
+    return;
+  }
+
+  // สุ่ม index ของนักเรียนที่ยังไม่ได้ถูกสุ่ม
+  const randomIndex = Math.floor(Math.random() * remainingStudents.length);
+
+  // ดึงข้อมูลของนักเรียนที่สุ่มได้
+  const randomStudent = remainingStudents[randomIndex];
+
+  // ระบุวันที่และเวลาเข้าเรียน
+  const currentDate = new Date();
+  const formattedDate = currentDate.toLocaleString('en-US', { timeZone: 'UTC' }).replace(',', '');
+
+  // ถ้านักเรียนยังไม่มีวันที่เข้าเรียน (ค่าเริ่มต้น) ให้กำหนดเป็นวันที่และเวลาปัจจุบัน
+  if (!randomStudent.class_date) {
+    randomStudent.class_date = formattedDate;
+  }
+
+  // แสดงข้อมูลนักเรียนที่สุ่มได้ใน console log เพื่อทดสอบ
+  console.log("Random Student:", randomStudent);
+
+  // กำหนดค่า randomized เป็น true เพื่อบอกว่านักเรียนนี้ถูกสุ่มแล้ว
+  randomStudent.randomized = true;
+
+  // แสดงข้อมูลของนักเรียนที่สุ่มได้ใน UI หรือส่วนอื่น ๆ ที่คุณต้องการ
+  this.footer = `นักเรียนที่สุ่มได้: ${randomStudent.id} - ${randomStudent.class_date} - ${randomStudent.room} - ${randomStudent.subject}`;
+
+  // ลบนักเรียนที่ถูกสุ่มไปแล้วออกจากรายการนักเรียนที่เหลือ
+  const indexToRemove = this.students.findIndex(student => student.id === randomStudent.id);
+  this.students.splice(indexToRemove, 1);
+
+  // เปิดใช้งาน Random Check
+  this.randomCheckActive = true;
+},
               google_login() {
               // Using a popup.
               var provider = new firebase.auth.GoogleAuthProvider();
@@ -480,12 +552,79 @@
                  }
               );
             },
-  
+            randomCheck() {
+  // กรองนักเรียนที่ยังไม่ได้ถูกสุ่ม
+  const remainingStudents = this.students.filter(student => !student.randomized);
+
+  // ถ้านักเรียนทั้งหมดถูกสุ่มแล้ว
+  if (remainingStudents.length === 0) {
+    this.footer = "สุ่มเสร็จสิ้น นักศึกษาครบแล้ว";
+    return;
+  }
+
+  // สุ่ม index ของนักเรียนที่ยังไม่ได้ถูกสุ่ม
+  const randomIndex = Math.floor(Math.random() * remainingStudents.length);
+
+  // ดึงข้อมูลของนักเรียนที่สุ่มได้
+  const randomStudent = remainingStudents[randomIndex];
+
+  // ระบุวันที่และเวลาเข้าเรียน
+  const currentDate = new Date();
+  const formattedDate = currentDate.toLocaleString('en-US', { timeZone: 'UTC' }).replace(',', '');
+
+  // ถ้านักเรียนยังไม่มีวันที่เข้าเรียน (ค่าเริ่มต้น) ให้กำหนดเป็นวันที่และเวลาปัจจุบัน
+  if (!randomStudent.class_date) {
+    randomStudent.class_date = formattedDate;
+  }
+
+  // แสดงข้อมูลนักเรียนที่สุ่มได้ใน console log เพื่อทดสอบ
+  console.log("Random Student:", randomStudent);
+
+  // กำหนดค่า randomized เป็น true เพื่อบอกว่านักเรียนนี้ถูกสุ่มแล้ว
+  randomStudent.randomized = true;
+
+  // แสดงข้อมูลของนักเรียนที่สุ่มได้ใน UI หรือส่วนอื่น ๆ ที่คุณต้องการ
+  this.footer = `นักเรียนที่สุ่มได้: ${randomStudent.id} - ${randomStudent.class_date} - ${randomStudent.room} - ${randomStudent.subject}`;
+
+  // ลบนักเรียนที่ถูกสุ่มไปแล้วออกจากรายการนักเรียนที่เหลือ
+  const indexToRemove = this.students.findIndex(student => student.id === randomStudent.id);
+  this.students.splice(indexToRemove, 1);
+
+  // เปิดใช้งาน Random Check
+  this.randomCheckActive = true;
+},
+
+            getstudent(id) {
+  // ค้นหาข้อมูลจาก ID ที่รับเข้ามา
+  db.collection("checkin")
+    .doc(id)  // ใช้ .doc(id) เพื่อค้นหาเอกสารที่มี ID ตรงกับที่รับเข้ามา
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        // ถ้าเอกสารพบ (ID ตรง)
+        this.students = [{  // กำหนดข้อมูลให้แสดงเฉพาะข้อมูลที่ค้นหาเจอ
+          id: doc.id,
+          class_date: doc.data().class_date,
+          room: doc.data().room,
+          subject: doc.data().subject
+        }];
+        this.footer = '';  // ล้างข้อความใน footer
+      } else {
+        // ถ้าเอกสารไม่พบ (ID ไม่ตรง)
+        this.students = [];  // กำหนดให้แสดงข้อความว่าไม่พบข้อมูล
+        this.footer = 'ไม่พบข้อมูลที่ค้นหา'; 
+      }
+    })
+    .catch((error) => {
+      console.error("Error getting document:", error);
+    });
+},
   
   
   
           },
         });
+        
         
         
         app.use(vuetify).mount("#app");
