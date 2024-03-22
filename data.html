@@ -177,12 +177,55 @@
                           </div>
                       </template>
                     </v-card-actions>
-                  
+                    <v-text-field v-model="ustudent" label="E-mail" class="very-light"></v-text-field>
+                    <v-btn @click="getstudent(ustudent)" class="custom-card-title">SEARCH</v-btn>
+
+                    <br/>
+                    <br/>
+                    <table width="100%">
+                      <thead>
+                        <tr>
+                          <td>รหัส</td>
+                          <td>คำนำหน้า</td>
+                          <td>ชื่อ</td>
+                          <td>สกุล</td>
+                          <td>Email</td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(s) in students">
+                          <td>{{s.id}}</td>
+                          <td>{{s.title}}</td>
+                          <td>{{s.fname}}</td>
+                          <td>{{s.lname}}</td>
+                          <td>{{s.email}}</td>
+                          <td>
+                            <v-btn class="edit-button" @click="edit(s)" class="purple">EDIT</v-btn>
+                            <v-btn class="delete-button" @click="deleteData(s)" class="red">DELETE</v-btn>
+                          </td>
+                        </tr>
+                      <tr v-if="ustudent">
+                        <td>{{ustudent.id}}</td>
+                        <td>{{ustudent.title}}</td>
+                        <td>{{ustudent.fname}}</td>
+                        <td>{{ustudent.lname}}</td>
+                        <td>{{ustudent.email}}</td>
+                        <td>
+                          <v-btn @click="edit(ustudent)" class="purple">EDIT</v-btn>
+                          <v-btn @click="deleteData(ustudent)" class="red">DELETE</v-btn>
+                        </td>
+      
+      
+                      </tr>
+                      </tbody>
+                    </table>
                     
                     <v-card-actions>
                         
                         <v-btn @click="addData()" class="btn btn-success" >เพิ่มนักศึกษา</v-btn>
-                        <a href="teacher.html" class="btn btn-success">เเสดงรายชื่อทั้งหมด</a>
+                        <!-- <v-btn @click="autoRead()" class="lavender-container">รายชื่อนักศึกษา</v-btn> -->
+                        <v-btn @click="toggleStudents()" class="lavender-container">รายชื่อนักศึกษา</v-btn>
+
                     </v-card-actions>
                     
                    
@@ -206,7 +249,7 @@
                 
                
                 <!--แก้ไขข้อมูล - เพิ่มข้อมูล -->
-                <v-card v-if="editmode==='เพิ่มนักเรียน'">
+                <v-card v-if="editmode==='เพิ่มนักศึกษา'">
                     <v-card-text class="pa-6">
                         <v-card-title class="bg-blue-grey">{{editmode}}</v-card-title>
                         <v-text-field v-model="editstd.id" label="รหัส"></v-text-field>
@@ -217,8 +260,8 @@
                         <v-text-field v-model="editstd.section" label="Section"></v-text-field>
                    </v-card-text>
                    <v-card-actions>
-                        <v-btn @click="savedata()" class="btn btn-success" >บันทึก</v-btn>
-                        <v-btn @click="editmode=0" class="btn btn-danger" >ยกเลิก</v-btn>
+                        <v-btn @click="savedata()" class="btn btn-success" >Save</v-btn>
+                        <v-btn @click="editmode=0" class="btn btn-danger" >Cancel</v-btn>
                    </v-card-actions>
                  </v-card>
 
@@ -261,6 +304,7 @@
               user: null,
               ustudent: null,
               checkin:[],
+              showStudents: false, 
             };
           },
   
@@ -320,17 +364,50 @@
                   })
                 }
               },
+              // autoRead() {
+              //     db.collection("student").onSnapshot((querySnapshot) => {
+              //     var stdlist = [];
+              //     querySnapshot.forEach((doc) => {
+              //         stdlist.push({ id: doc.id, ...doc.data() });
+              //     });
+              //     this.students = stdlist;
+              //     });
+              // },
               autoRead() {
-                  db.collection("student").onSnapshot((querySnapshot) => {
-                  var stdlist = [];
-                  querySnapshot.forEach((doc) => {
-                      stdlist.push({ id: doc.id, ...doc.data() });
-                  });
-                  this.students = stdlist;
-                  });
+                     if (this.showStudents) {
+                     db.collection("student").onSnapshot((querySnapshot) => {
+                     var stdlist = [];
+                     querySnapshot.forEach((doc) => {
+                     stdlist.push({ id: doc.id, ...doc.data() });
+                     });
+                     this.students = stdlist;
+                     });
+              }
               },
+              getstudent(email){
+                    if (this.showStudents) {
+                    db.collection("student")
+                    .where("email","==",email)
+                    .limit(1)
+                    .get()
+                    .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                    this.ustudent = { id: doc.id, ...doc.data() };
+                    });
+                   });
+                  }
+              },
+              toggleStudents() {
+                    this.showStudents = !this.showStudents;
+                    if (this.showStudents) {
+                    this.autoRead(); // เรียกใช้ autoRead() เมื่อเปิดโชว์ข้อมูล
+               } else {
+                    this.students = []; // ล้างข้อมูลเมื่อปิดโชว์ข้อมูล
+                     }
+                    },
+              
               addData(){
-                  this.editmode = "เพิ่มนักเรียน";
+                  this.editmode = "เพิ่มนักศึกษา";
                   this.editstd = {};
               },
 
@@ -344,7 +421,7 @@
                 },
               edit(std){
                   this.editstd = std;
-                  this.editmode = "เพิ่มนักเรียน";
+                  this.editmode = "เพิ่มนักศึกษา";
               },
               editqz(quiz){
                 this.editquiz = quiz;
