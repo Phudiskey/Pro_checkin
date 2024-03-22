@@ -151,14 +151,24 @@
       .lavender-container a.v-btn:focus {
         background-color: #4a90e2;
     }
+    .logout-btn {
+    margin-right: 20px; /* ปรับระยะห่างทางขวาตามต้องการ */
+}
+
+
     </style>
 </head>
 <body>
     <header class="header">
         <nav class="navbar">
-            <ul>
-                
-            </ul>
+            <!-- <ul class="navbar navbar-right">
+                    <!-- ปุ่มอื่น ๆ ใน Navbar -->
+                    <!-- <li><v-btn href="data.html" class="navbar-button">Data</v-btn></li>
+                    <li><v-btn @click="readData()" class="navbar-button">Check Student</v-btn></li>
+                    <li><v-btn href="quiz.html" class="navbar-button">Quiz</v-btn></li>
+                    <li><v-btn @click="randomCheck()" class="navbar-button">Random Check</v-btn></li>
+                    <li><v-btn @click="google_logout()" class="navbar-button">Logout</v-btn></li>
+            </ul>--> 
         </nav>
     </header>
     <div id = "app">
@@ -169,6 +179,8 @@
                       <v-card-actions >
                         <template v-if="user">
                           <div class="pa-2">
+                            <div v-if="user">
+                                <v-btn @click="google_logout()" v-if="user" class="btn btn-danger" flat text> Logout</v-btn>  
                               <v-avatar><img :src="user.photoURL" /></v-avatar>
                           </div>
                           <div class="pa-2">
@@ -254,12 +266,7 @@
                 <v-btn href="quiz.html" class="lavender-container">Quiz</v-btn>
                       
                 <v-btn @click="randomCheck()" class="lavender-container">Random Check</v-btn>
-                
-                    <v-btn @click="google_login()" v-if="!user"> Login</v-btn>
-                    <div v-if="user">
-                      <v-btn @click="google_logout()" v-if="user" class="btn btn-danger"> Logout</v-btn>     
-                     
-                         
+
                 </v-card-actions>
                 
                 
