@@ -198,6 +198,7 @@
                       <thead>
                         <tr>
                             <td>รหัส</td>
+                            <td>ชื่อ</td>
                             <td>เวลาเข้าเรียน</td>
                             <td>room</td>
                             <td>วิชา</td>
@@ -207,17 +208,20 @@
                       <tbody>
                         <tr v-for="(s) in students">
                             <td>{{ s.id }}</td>
+                            <td>{{ s.name }}</td>
                             <td>{{ s.class_date }}</td>
                             <td>{{ s.room }}</td>
                             <td>{{ s.subject }}</td>
                             <td>{{ s.come_class }}</td>
                           <td>
                             <v-btn class="edit-button" @click="edit(s)" class="purple">EDIT</v-btn>
+                            <v-btn class="delete-button" @click="deleteData(s)" class="red">DELETE</v-btn>
                             <!-- <v-btn class="delete-button" @click="deleteData(s)" class="red">DELETE</v-btn> -->
                           </td>
                         </tr>
                       <tr v-if="ustudent">
                         <td>{{ustudent.id}}</td>
+                        <td>{{ustudent.name}}</td>
                         <td>{{ustudent.class_date}}</td>
                         <td>{{ustudent.room}}</td>
                         <td>{{ustudent.subject}}</td>
@@ -276,6 +280,7 @@
                     <v-card-text class="pa-6">
                         <v-card-title class="bg-blue-grey">{{editmode}}</v-card-title>
                         <v-text-field v-model="editstd.id" label="รหัส"></v-text-field>
+                        <v-text-field v-model="editstd.name" label="ชื่อ"></v-text-field>
                         <v-text-field v-model="editstd.class_date" label="เวลาเข้าเรียน" ></v-text-field>
                         <v-text-field v-model="editstd.room" label="ห้อง"></v-text-field >
                         <v-text-field v-model="editstd.subject" label="วิชา"></v-text-field>
@@ -529,7 +534,7 @@
   randomStudent.randomized = true;
 
   // แสดงข้อมูลของนักเรียนที่สุ่มได้ใน UI หรือส่วนอื่น ๆ ที่คุณต้องการ
-  this.footer = `นักเรียนที่สุ่มได้: ${randomStudent.id} - ${randomStudent.class_date} - ${randomStudent.room} - ${randomStudent.subject}`;
+  this.footer = `นักศึกษาที่สุ่มได้: ${randomStudent.id} - ${randomStudent.class_date} - ${randomStudent.room} - ${randomStudent.subject}`;
 
   // ลบนักเรียนที่ถูกสุ่มไปแล้วออกจากรายการนักเรียนที่เหลือ
   const indexToRemove = this.students.findIndex(student => student.id === randomStudent.id);
