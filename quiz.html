@@ -176,19 +176,17 @@
                       </thead>
                       <tbody>
                           <!-- ตัดการแสดงข้อมูลบรรทัดแรกออก -->
-                          <template v-for="(c, index) in answer" :key="index">
-                              <template v-if="index !== 0"> <!-- เพิ่มเงื่อนไขนี้ -->
+                          <template v-for="(ustudent, index) in students" :key="index">
                                   <tr>
-                                      <td>{{ c.id }}</td>
-                                      <td>{{ c.class_date }}</td>
-                                      <td>{{ c.qiz_send }}</td>
-                                      <td>{{ c.room }}</td>
-                                      <td>{{ c.subject }}</td>
+                                      <td>{{ ustudent.id }}</td>
+                                      <td>{{ ustudent.class_date }}</td>
+                                      <td>{{ ustudent.qiz_send }}</td>
+                                      <td>{{ ustudent.room }}</td>
+                                      <td>{{ ustudent.subject }}</td>
                                       <td>
-                                          <v-btn @click="deletesed(c)"><v-icon icon="mdi-account-remove"></v-icon></v-btn>
+                                          <v-btn @click="deletesed(ustudent)"><v-icon icon="mdi-account-remove"></v-icon></v-btn>
                                       </td>
                                   </tr>
-                              </template>
                           </template>
                       </tbody>
                   </table>
