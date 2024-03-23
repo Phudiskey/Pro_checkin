@@ -221,7 +221,7 @@
                         <v-btn @click="google_login()" v-if="!user"> Login</v-btn>
                         <div v-if="user">
                           <v-btn @click="google_logout()" v-if="user" class="btn btn-danger"> Logout</v-btn>
-                          <v-btn href="teacherr.html" class="lavender-container">Back</v-btn>     
+                          <v-btn href="teacher.html" class="lavender-container">Back</v-btn>     
                           <div v-for="(s) in students">
                             <v-btn v-if="user.email == s.email"><a href="student.html">Next for students</a></v-btn>
                           </div> 
@@ -257,11 +257,11 @@
                 
             </v-container>        
           </v-app>
-          <footer class="footer">
+          <!-- <footer class="footer">
             <div class="container">
                 <p>&copy; Molbie application project.</p>
             </div>
-        </footer>
+        </footer> -->
     </div>
     <script>
         const vuetify = Vuetify.createVuetify();
