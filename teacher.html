@@ -199,6 +199,7 @@
                         <tr>
                             <td>รหัส</td>
                             <td>ชื่อ</td>
+                            <td>นามสกุล</td>
                             <td>เวลาเข้าเรียน</td>
                             <td>room</td>
                             <td>วิชา</td>
@@ -208,7 +209,8 @@
                       <tbody>
                         <tr v-for="(s) in students">
                             <td>{{ s.id }}</td>
-                            <td>{{ s.name }}</td>
+                            <td>{{ s.fname }}</td>
+                            <td>{{ s.lname }}</td>
                             <td>{{ s.class_date }}</td>
                             <td>{{ s.room }}</td>
                             <td>{{ s.subject }}</td>
@@ -221,7 +223,8 @@
                         </tr>
                       <tr v-if="ustudent">
                         <td>{{ustudent.id}}</td>
-                        <td>{{ustudent.name}}</td>
+                        <td>{{ustudent.fname}}</td>
+                        <td>{{ustudent.lname}}</td>
                         <td>{{ustudent.class_date}}</td>
                         <td>{{ustudent.room}}</td>
                         <td>{{ustudent.subject}}</td>
@@ -280,7 +283,8 @@
                     <v-card-text class="pa-6">
                         <v-card-title class="bg-blue-grey">{{editmode}}</v-card-title>
                         <v-text-field v-model="editstd.id" label="รหัส"></v-text-field>
-                        <v-text-field v-model="editstd.name" label="ชื่อ"></v-text-field>
+                        <v-text-field v-model="editstd.fname" label="ชื่อ"></v-text-field>
+                        <v-text-field v-model="editstd.lname" label="นามสกุล"></v-text-field>
                         <v-text-field v-model="editstd.class_date" label="เวลาเข้าเรียน" ></v-text-field>
                         <v-text-field v-model="editstd.room" label="ห้อง"></v-text-field >
                         <v-text-field v-model="editstd.subject" label="วิชา"></v-text-field>
