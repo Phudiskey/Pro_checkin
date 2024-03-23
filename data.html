@@ -17,8 +17,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&family=Itim&family=Roboto:wght@100&display=swap" rel="stylesheet">
-
-
     <title>Data</title>
     <style>
       
@@ -32,11 +30,9 @@
         padding: 40px 0;
         text-align: center;
     }
-
     .footer p {
         margin: 300;
     }
-
     .header {
     background-color: #333; 
     color: #fff; 
@@ -45,28 +41,23 @@
     justify-content: space-between; 
     align-items: center;
     }
-
     .logo {
         font-size: 24px;
         font-weight: bold;
     }
-
     .navbar ul {
         list-style-type: none; 
         padding: 0;
         margin: 0;
         display: flex; 
     }
-
     .navbar li {
         margin-right: 20px; 
     }
-
     .navbar a {
         text-decoration: none; 
         color: #fff; 
     }
-
     .navbar a:hover {
         text-decoration: underline;
     }
@@ -117,7 +108,6 @@
         color: #ffffff;
         background-color: #1322ff;
       }
-
       .lavender-container .v-btn {
         background-color: #5da2fc;
         color: #fff;
@@ -126,15 +116,12 @@
         border-radius: 5px;
         font-size: 16px;
      }
-
       .lavender-container .v-btn:hover {
         background-color: #4a90e2;
      }
-
       .lavender-container .v-btn:focus {
         background-color: #4a90e2;
      }
-
       .lavender-container a.v-btn {
         background-color: #5da2fc;
         color: #fff;
@@ -143,11 +130,9 @@
         border-radius: 5px;
         font-size: 16px;
     }
-
       .lavender-container a.v-btn:hover {
         background-color: #4a90e2;
     }
-
       .lavender-container a.v-btn:focus {
         background-color: #4a90e2;
     }
@@ -177,6 +162,7 @@
                           </div>
                       </template>
                     </v-card-actions>
+
                     <v-text-field v-model="ustudent" label="E-mail" class="very-light"></v-text-field>
                     <v-btn @click="getstudent(ustudent)" class="custom-card-title">SEARCH</v-btn>
 
@@ -214,29 +200,30 @@
                           <v-btn @click="edit(ustudent)" class="purple">EDIT</v-btn>
                           <v-btn @click="deleteData(ustudent)" class="red">DELETE</v-btn>
                         </td>
-      
-      
+
+
                       </tr>
                       </tbody>
                     </table>
-                    
+
                     <v-card-actions>
-                        
+
                         <v-btn @click="addData()" class="btn btn-success" >เพิ่มนักศึกษา</v-btn>
+                        <a href="teacher.html" class="btn btn-success">เเสดงรายชื่อทั้งหมด</a>
                         <!-- <v-btn @click="autoRead()" class="lavender-container">รายชื่อนักศึกษา</v-btn> -->
                         <v-btn @click="toggleStudents()" class="lavender-container">รายชื่อนักศึกษา</v-btn>
 
                     </v-card-actions>
-                    
-                   
+
+
     
                     <v-card-actions>
                         <v-btn @click="google_login()" v-if="!user"> Login</v-btn>
                         <div v-if="user">
                           <v-btn @click="google_logout()" v-if="user" class="btn btn-danger"> Logout</v-btn>
-                          <v-btn href="teacher.html" class="lavender-container">Back</v-btn>     
-                          <!-- <div v-for="(s) in students">
-                            <v-btn v-if="user.email == s.email"><a href="student.html">Next for students</a></v-btn> -->
+                          <v-btn href="teacherr.html" class="lavender-container">Back</v-btn>     
+                          <div v-for="(s) in students">
+                            <v-btn v-if="user.email == s.email"><a href="student.html">Next for students</a></v-btn>
                           </div> 
                           <!-- <div v-for="(t) in teachers">
                             <v-btn v-if="user.email == t.email"><a href="teachers_home.html">Next for Teachers</a></v-btn>
@@ -246,8 +233,8 @@
                     </v-card-actions>
                 </v-card>
                 
-                
-               
+
+
                 <!--แก้ไขข้อมูล - เพิ่มข้อมูล -->
                 <v-card v-if="editmode==='เพิ่มนักศึกษา'">
                     <v-card-text class="pa-6">
@@ -266,7 +253,6 @@
                  </v-card>
 
                  
-
                           
                 
             </v-container>        
@@ -307,7 +293,7 @@
               showStudents: false, 
             };
           },
-  
+
   
           mounted() {
               firebase.auth().onAuthStateChanged((user)=>{
@@ -374,6 +360,13 @@
               //     });
               // },
               autoRead() {
+                  db.collection("student").onSnapshot((querySnapshot) => {
+                  var stdlist = [];
+                  querySnapshot.forEach((doc) => {
+                      stdlist.push({ id: doc.id, ...doc.data() });
+                  });
+                  this.students = stdlist;
+                  });
                      if (this.showStudents) {
                      db.collection("student").onSnapshot((querySnapshot) => {
                      var stdlist = [];
@@ -405,8 +398,9 @@
                     this.students = []; // ล้างข้อมูลเมื่อปิดโชว์ข้อมูล
                      }
                     },
-              
+
               addData(){
+                  this.editmode = "เพิ่มนักเรียน";
                   this.editmode = "เพิ่มนักศึกษา";
                   this.editstd = {};
               },
@@ -421,6 +415,7 @@
                 },
               edit(std){
                   this.editstd = std;
+                  this.editmode = "เพิ่มนักเรียน";
                   this.editmode = "เพิ่มนักศึกษา";
               },
               editqz(quiz){
