@@ -175,19 +175,25 @@
                           </tr>
                       </thead>
                       <tbody>
-                          <tr v-for="(c, index) in answer" :key="index">
-                              <td>{{ c.studentId }}</td>
-                              <td>{{ c.dateTime }}</td>
-                              <td>{{ c.answer }}</td>
-                              <td>{{ c.room }}</td>
-                              <td>{{ c.subject }}</td>
-                              <td>
-                                  <v-btn @click="deletesed(c)"><v-icon icon="mdi-account-remove"></v-icon></v-btn>
-                              </td>
-                          </tr>
+                          <!-- ตัดการแสดงข้อมูลบรรทัดแรกออก -->
+                          <template v-for="(c, index) in answer" :key="index">
+                              <template v-if="index !== 0"> <!-- เพิ่มเงื่อนไขนี้ -->
+                                  <tr>
+                                      <td>{{ c.id }}</td>
+                                      <td>{{ c.class_date }}</td>
+                                      <td>{{ c.qiz_send }}</td>
+                                      <td>{{ c.room }}</td>
+                                      <td>{{ c.subject }}</td>
+                                      <td>
+                                          <v-btn @click="deletesed(c)"><v-icon icon="mdi-account-remove"></v-icon></v-btn>
+                                      </td>
+                                  </tr>
+                              </template>
+                          </template>
                       </tbody>
                   </table>
               </v-card-text>
+              
               
                 
                 <v-card-text class="pa-6" v-if="editmode==='โชว์คำตอบทั้งหมด'">
@@ -315,27 +321,28 @@
                 });
                 this.students = stdlist;
               });
-              db.collection("answer").get()
-      .then((querySnapshot) => {
+              db.collection("answer")
+    .get()
+    .then((querySnapshot) => {
         const answers = [];
         querySnapshot.forEach((doc) => {
-          // สร้าง object ของคำตอบแต่ละรายการ
-          const answerData = {
-            id: doc.id,
-            studentId: doc.data().id,
-            dateTime: doc.data().time_date.toDate().toLocaleString(), // แปลง timestamp เป็นวันที่แบบอ่านง่าย
-            answer: doc.data().qiz_send,
-            room: doc.data().room,
-            subject: doc.data().subject,
-          };
-          answers.push(answerData);
+            // สร้าง object ของคำตอบแต่ละรายการ
+            const answerData = {
+                id: doc.data().id,
+                class_date: doc.data().class_date,
+                qiz_send: doc.data().qiz_send,
+                room: doc.data().room,
+                subject: doc.data().subject,
+            };
+            answers.push(answerData);
         });
         // อัพเดทข้อมูลใน data property ของ Vue
         this.answer = answers;
-      })
-      .catch((error) => {
+    })
+    .catch((error) => {
         console.error("Error getting documents: ", error);
-      });
+    });
+
 
               
               
