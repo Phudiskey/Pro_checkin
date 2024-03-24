@@ -133,7 +133,6 @@
                       </template>
                     </v-card-actions>
                   
-                    
                     <v-card-actions>
                         <!--<v-btn @click="readData()">Read Data (get)</v-btn>
                         <v-btn @click="autoRead()">Auto Read (onSnapshot)</v-btn>-->
@@ -142,8 +141,6 @@
                         <v-btn @click="cheksend()" class="btn btn-info" >Check Answers</v-btn>
                     </v-card-actions>
                     
-                   
-    
                     <v-card-actions>
                         <v-btn @click="google_login()" v-if="!user">เข้าสู่ระบบ</v-btn>
                         <div v-if="user">
@@ -176,21 +173,23 @@
                       </thead>
                       <tbody>
                           <!-- ตัดการแสดงข้อมูลบรรทัดแรกออก -->
-                          <template v-for="(ustudent, index) in students" :key="index">
-                                  <tr>
-                                      <td>{{ ustudent.id }}</td>
-                                      <td>{{ ustudent.class_date }}</td>
-                                      <td>{{ ustudent.qiz_send }}</td>
-                                      <td>{{ ustudent.room }}</td>
-                                      <td>{{ ustudent.subject }}</td>
-                                      <td>
-                                          <v-btn @click="deletesed(ustudent)"><v-icon icon="mdi-account-remove"></v-icon></v-btn>
-                                      </td>
-                                  </tr>
+                          <template v-for="(ustudent, index) in students" >
+                              <tr>
+                                  <td>{{ ustudent.id }}</td>
+                                  <td>{{ ustudent.class_date }}</td>
+                                  <td>{{ replaceQuizIDs(ustudent.qiz_send) }}</td>
+                                  <td>{{ ustudent.room }}</td>
+                                  <td>{{ ustudent.subject }}</td>
+                                  <td>
+                                      <v-btn @click="deletesed(ustudent)"><v-icon icon="mdi-account-remove"></v-icon></v-btn>
+                                  </td>
+                              </tr>
                           </template>
                       </tbody>
                   </table>
               </v-card-text>
+              
+              
               
               
                 
@@ -319,15 +318,18 @@
                 });
                 this.students = stdlist;
               });
+              
               db.collection("answer")
     .get()
     .then((querySnapshot) => {
         const answers = [];
+        let index = 1;
         querySnapshot.forEach((doc) => {
             // สร้าง object ของคำตอบแต่ละรายการ
             const answerData = {
                 id: doc.data().id,
                 class_date: doc.data().class_date,
+                quiz_name: doc.data().quiz_name,
                 qiz_send: doc.data().qiz_send,
                 room: doc.data().room,
                 subject: doc.data().subject,
@@ -430,6 +432,16 @@
                 window.location.href = 'index.html';
               }
             },
+            replaceQuizIDs(answerList) {
+        const replacedAnswers = {};
+        for (const key in answerList) {
+            const quizID = key;
+            const answer = answerList[key];
+            const quizName = this.quiz.find(q => q.id === quizID)?.quiz_name || 'Unknown';
+            replacedAnswers[quizName] = answer;
+        }
+        return replacedAnswers;
+    },
             getstudent(email){
               db.collection("student")
                 .where("email","==",email)
